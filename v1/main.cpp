@@ -23,8 +23,6 @@ ostream& getOutputStream(ofstream& fileStream);
 int main() {
     LinkedList list;
 
-    cout << list;
-
     ifstream inputFileStream;
 
     getInputStream(inputFileStream) >> list;
