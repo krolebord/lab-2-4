@@ -101,8 +101,26 @@ std::istream &operator >>(std::istream& stream, LinkedList& list) {
 }
 
 std::ostream& operator <<(std::ostream& stream, const LinkedList& list) {
+    if(&stream == &std::cout) {
+        stream << '<';
+
+        auto iter = list.begin();
+        if(iter != list.end()) {
+            stream << *iter;
+            ++iter;
+        }
+
+        for(; iter != list.end(); ++iter) {
+            stream << ", " << *iter;
+        }
+
+        stream << '>';
+
+        return stream;
+    }
+
     for(auto item : list)
-        std::cout << item << ' ';
+        stream << item << ' ';
 
     return stream;
 }
