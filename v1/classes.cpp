@@ -4,37 +4,43 @@
 
 // Node
 
-LinkedList::ListNode::ListNode(TItem value) :
+template<class TItem>
+LinkedList<TItem>::ListNode::ListNode(TItem value) :
         value(std::move(value)),
         next(nullptr) {}
 
-LinkedList::ListNode::~ListNode() {
+template<class TItem>
+LinkedList<TItem>::ListNode::~ListNode() {
     delete next;
 }
 
 // Iterator
-typedef LinkedList::Iterator Iterator;
 
-LinkedList::Iterator::Iterator() :
+template<class TItem>
+LinkedList<TItem>::Iterator::Iterator() :
     current(nullptr) {}
 
-LinkedList::Iterator::Iterator(LinkedList::ListNode *current) :
+template<class TItem>
+LinkedList<TItem>::Iterator::Iterator(LinkedList::ListNode *current) :
     current(current) {}
 
-TItem Iterator::operator*() const {
+template<class TItem>
+TItem LinkedList<TItem>::Iterator::operator*() const {
     throwIfNull();
 
     return current->value;
 }
 
-Iterator& Iterator::operator ++() {
+template<class TItem>
+typename LinkedList<TItem>::Iterator& LinkedList<TItem>::Iterator::operator ++() {
     throwIfNull();
 
     current = current->next;
     return *this;
 }
 
-Iterator Iterator::operator ++(int) {
+template<class TItem>
+typename LinkedList<TItem>::Iterator LinkedList<TItem>::Iterator::operator ++(int) {
     throwIfNull();
 
     const Iterator temp(current);
@@ -42,30 +48,36 @@ Iterator Iterator::operator ++(int) {
     return temp;
 }
 
-bool Iterator::operator ==(const Iterator& r) const {
+template<class TItem>
+bool LinkedList<TItem>::Iterator::operator ==(const Iterator& r) const {
     return current == r.current;
 }
 
-bool Iterator::operator !=(const Iterator& r) const {
+template<class TItem>
+bool LinkedList<TItem>::Iterator::operator !=(const Iterator& r) const {
     return current != r.current;
 }
 
-void Iterator::throwIfNull() const {
+template<class TItem>
+void LinkedList<TItem>::Iterator::throwIfNull() const {
     if(current == nullptr)
         throw std::out_of_range("Iterator error");
 }
 
 // List
 
-LinkedList::LinkedList() :
+template<class TItem>
+LinkedList<TItem>::LinkedList() :
         head(nullptr),
         tail(nullptr) {}
 
-LinkedList::~LinkedList() {
+template<class TItem>
+LinkedList<TItem>::~LinkedList() {
     delete head;
 }
 
-void LinkedList::push_back(const TItem &item) {
+template<class TItem>
+void LinkedList<TItem>::push_back(const TItem &item) {
     auto newNode = new ListNode(item);
 
     if(tail == nullptr) {
@@ -77,21 +89,26 @@ void LinkedList::push_back(const TItem &item) {
     }
 }
 
-void LinkedList::clear() {
+
+template<class TItem>
+void LinkedList<TItem>::clear() {
     delete head;
 
     head = tail = nullptr;
 }
 
-Iterator LinkedList::begin() const {
+template<class TItem>
+typename LinkedList<TItem>::Iterator LinkedList<TItem>::begin() const {
     return Iterator(head);
 }
 
-Iterator LinkedList::end() const {
+template<class TItem>
+typename LinkedList<TItem>::Iterator LinkedList<TItem>::end() const {
     return Iterator();
 }
 
-std::istream &operator >>(std::istream& stream, LinkedList& list) {
+template<class TItem>
+std::istream &operator >>(std::istream& stream, LinkedList<TItem>& list) {
     TItem item;
 
     while (stream >> item)
@@ -100,7 +117,8 @@ std::istream &operator >>(std::istream& stream, LinkedList& list) {
     return stream;
 }
 
-std::ostream& operator <<(std::ostream& stream, const LinkedList& list) {
+template<class TItem>
+std::ostream& operator <<(std::ostream& stream, const LinkedList<TItem>& list) {
     if(&stream == &std::cout) {
         stream << '<';
 

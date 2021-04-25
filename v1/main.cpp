@@ -3,6 +3,7 @@
 #include <string>
 
 #include "classes.h"
+#include "classes.cpp"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ istream& getInputStream(ifstream& fileStream);
 ostream& getOutputStream(ofstream& fileStream);
 
 int main() {
-    LinkedList list;
+    LinkedList<string> list;
 
     ifstream inputFileStream;
 
@@ -44,18 +45,18 @@ void fixCin() {
 // C++20 concepts
 
 template <typename>
-constexpr bool FileStream = false;
+constexpr bool IsFileStream = false;
 
 template <>
-constexpr bool FileStream<ifstream> = true;
+constexpr bool IsFileStream<ifstream> = true;
 
 template <>
-constexpr bool FileStream<ofstream> = true;
+constexpr bool IsFileStream<ofstream> = true;
 
 // or
 /*
 template <typename TFileStream>
-concept FileStream = requires (TFileStream file) {
+concept IsFileStream = requires (TFileStream file) {
     file.is_open();
     file.open(string());
     file.close();
@@ -63,14 +64,14 @@ concept FileStream = requires (TFileStream file) {
 */
 
 template<typename TFileStream>
-requires FileStream<TFileStream>
+requires IsFileStream<TFileStream>
 TFileStream& getFileStream(TFileStream& fileStream, const string& defaultPath)  {
     cin.ignore();
 
     while(true) {
         fixCin();
 
-        cout << "\tEnter file path: " << endl;
+        cout << "\tEnter file path: ";
 
         string path;
         getline(cin, path);
@@ -130,6 +131,4 @@ ostream& getOutputStream(ofstream& fileStream) {
         if(static_cast<OutputMode>(n) == OutputMode::File)
             return getFileStream(fileStream, "out.txt");
     }
-
-    return cout;
 }

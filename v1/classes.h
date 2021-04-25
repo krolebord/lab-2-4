@@ -1,10 +1,9 @@
 #ifndef LAB_2_4_CLASSES_H
 #define LAB_2_4_CLASSES_H
 
-#include <string>
+#include <iostream>
 
-typedef std::string TItem;
-
+template<class TItem>
 class LinkedList {
 private:
     struct ListNode {
@@ -50,8 +49,10 @@ public:
     [[nodiscard]] Iterator end() const;
 };
 
-std::istream& operator >>(std::istream& stream, LinkedList& list);
+template<class TItem>
+std::istream& operator >>(std::istream& stream, LinkedList<TItem>& list);
 
-std::ostream& operator <<(std::ostream& stream, const LinkedList& list);
+template<class TItem>
+std::ostream& operator <<(std::ostream& stream, const LinkedList<TItem>& list);
 
 #endif //LAB_2_4_CLASSES_H
